@@ -5,8 +5,15 @@ note
 
 class TEST_NORMAL_DISTRIBUTION
 
-inherit
-	TEST_SET_BASE
+create
+	make
+
+feature {NONE} -- Initialization
+
+	make
+			-- Create test instance.
+		do
+		end
 
 feature -- Creation Tests
 
@@ -16,8 +23,8 @@ feature -- Creation Tests
 			dist: NORMAL_DISTRIBUTION
 		do
 			create dist.make (0.0, 1.0)
-			assert ("mean set", dist.mean ~ 0.0)
-			assert ("variance set", dist.variance ~ 1.0)
+			check mean_set: dist.mean ~ 0.0 end
+			check variance_set: dist.variance ~ 1.0 end
 		end
 
 	test_default_create_creates_standard_normal
@@ -26,8 +33,8 @@ feature -- Creation Tests
 			dist: NORMAL_DISTRIBUTION
 		do
 			create dist
-			assert ("mean is zero", dist.mean ~ 0.0)
-			assert ("std dev is one", dist.standard_deviation ~ 1.0)
+			check mean_is_zero: dist.mean ~ 0.0 end
+			check std_dev_is_one: dist.standard_deviation ~ 1.0 end
 		end
 
 feature -- PDF Tests
@@ -41,7 +48,7 @@ feature -- PDF Tests
 			create dist.make (5.0, 2.0)
 			pdf_at_mean := dist.pdf (5.0)
 			pdf_away := dist.pdf (6.0)
-			assert ("pdf_at_mean > pdf_away", pdf_at_mean > pdf_away)
+			check pdf_at_mean_greater: pdf_at_mean > pdf_away end
 		end
 
 	test_pdf_positive
@@ -52,7 +59,7 @@ feature -- PDF Tests
 		do
 			create dist.make (0.0, 1.0)
 			pdf_val := dist.pdf (-3.0)
-			assert ("pdf non-negative", pdf_val >= 0)
+			check pdf_non_negative: pdf_val >= 0 end
 		end
 
 feature -- CDF Tests
@@ -65,7 +72,7 @@ feature -- CDF Tests
 		do
 			create dist.make (3.0, 1.0)
 			cdf_val := dist.cdf (3.0)
-			assert ("cdf at mean ~ 0.5", (cdf_val - 0.5).abs < 0.01)
+			check cdf_at_mean_approx_half: (cdf_val - 0.5).abs < 0.01 end
 		end
 
 	test_cdf_monotonic
@@ -74,8 +81,8 @@ feature -- CDF Tests
 			dist: NORMAL_DISTRIBUTION
 		do
 			create dist.make (0.0, 1.0)
-			assert ("cdf_increasing", dist.cdf (0.0) < dist.cdf (1.0))
-			assert ("cdf_increasing_2", dist.cdf (1.0) < dist.cdf (2.0))
+			check cdf_increasing: dist.cdf (0.0) < dist.cdf (1.0) end
+			check cdf_increasing_2: dist.cdf (1.0) < dist.cdf (2.0) end
 		end
 
 feature -- ICDF Tests
@@ -88,7 +95,7 @@ feature -- ICDF Tests
 		do
 			create dist.make (2.5, 1.0)
 			icdf_val := dist.icdf (0.5)
-			assert_true ("icdf(0.5) ~ mean", (icdf_val - 2.5).abs < 0.00001)
+			check icdf_half_approx_mean: (icdf_val - 2.5).abs < 0.00001 end
 		end
 
 feature -- Sampling Tests
@@ -101,7 +108,7 @@ feature -- Sampling Tests
 		do
 			create dist.make (0.0, 1.0)
 			sample_val := dist.sample
-			assert ("sample not NaN", not sample_val.is_nan)
+			check sample_not_nan: not sample_val.is_nan end
 		end
 
 	test_seeding_produces_same_sequence
@@ -118,8 +125,8 @@ feature -- Sampling Tests
 			s1_2 := dist1.sample
 			s2_1 := dist2.sample
 			s2_2 := dist2.sample
-			assert ("first samples match", (s1_1 - s2_1).abs < 0.0000000001)
-			assert ("second samples match", (s1_2 - s2_2).abs < 0.0000000001)
+			check first_samples_match: (s1_1 - s2_1).abs < 0.0000000001 end
+			check second_samples_match: (s1_2 - s2_2).abs < 0.0000000001 end
 		end
 
 feature -- Contract Tests

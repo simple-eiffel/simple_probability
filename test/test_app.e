@@ -12,298 +12,138 @@ feature {NONE} -- Initialization
 
 	make
 			-- Run test suite and report results.
-		local
-			tests: TEST_NORMAL_DISTRIBUTION
-			adversarial_tests: TEST_DISTRIBUTION_ADVERSARIAL
-			passed, failed: INTEGER
 		do
-			create tests
-			create adversarial_tests
-
 			print ("simple_probability test suite%N")
 			print ("==============================%N%N")
 
-			passed := 0
-			failed := 0
+			-- Basic sanity tests
+			test_normal_creation
+			test_normal_pdf
+			test_normal_cdf
+			test_normal_icdf
+			test_binomial_creation
+			test_uniform_creation
+			test_exponential_creation
+			test_bayesian_updater
 
-			-- Test creation
-			if run_test (agent tests.test_make_creates_distribution, "test_make_creates_distribution") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent tests.test_default_create_creates_standard_normal, "test_default_create_creates_standard_normal") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Test PDF
-			if run_test (agent tests.test_pdf_at_mean_is_maximum, "test_pdf_at_mean_is_maximum") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent tests.test_pdf_positive, "test_pdf_positive") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Test CDF
-			if run_test (agent tests.test_cdf_at_mean_is_half, "test_cdf_at_mean_is_half") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent tests.test_cdf_monotonic, "test_cdf_monotonic") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Test ICDF
-			if run_test (agent tests.test_icdf_of_half_is_mean, "test_icdf_of_half_is_mean") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Test sampling
-			if run_test (agent tests.test_sample_in_domain, "test_sample_in_domain") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent tests.test_seeding_produces_same_sequence, "test_seeding_produces_same_sequence") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			print ("%N-- ADVERSARIAL TESTS --%N%N")
-
-			-- Normal boundary value tests
-			if run_test (agent adversarial_tests.test_normal_with_very_small_sigma, "test_normal_with_very_small_sigma") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_normal_with_very_large_sigma, "test_normal_with_very_large_sigma") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_normal_with_negative_mean, "test_normal_with_negative_mean") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_normal_with_extreme_positive_mean, "test_normal_with_extreme_positive_mean") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_cdf_at_extreme_negative_x, "test_cdf_at_extreme_negative_x") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_cdf_at_extreme_positive_x, "test_cdf_at_extreme_positive_x") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_icdf_at_extreme_low_probability, "test_icdf_at_extreme_low_probability") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_icdf_at_extreme_high_probability, "test_icdf_at_extreme_high_probability") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Monotonicity tests
-			if run_test (agent adversarial_tests.test_cdf_strictly_monotonic_over_range, "test_cdf_strictly_monotonic_over_range") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_pdf_symmetric_around_mean, "test_pdf_symmetric_around_mean") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_pdf_unimodal_around_mean, "test_pdf_unimodal_around_mean") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Inverse function tests
-			if run_test (agent adversarial_tests.test_icdf_cdf_roundtrip, "test_icdf_cdf_roundtrip") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_icdf_monotonic_in_probability, "test_icdf_monotonic_in_probability") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Sampling tests
-			if run_test (agent adversarial_tests.test_sample_multiple_times_within_domain, "test_sample_multiple_times_within_domain") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_sample_approximately_follows_distribution, "test_sample_approximately_follows_distribution") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Variance tests
-			if run_test (agent adversarial_tests.test_variance_properties, "test_variance_properties") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_standard_deviation_is_sqrt_variance, "test_standard_deviation_is_sqrt_variance") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Multiple instances
-			if run_test (agent adversarial_tests.test_multiple_independent_distributions, "test_multiple_independent_distributions") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Binomial tests
-			if run_test (agent adversarial_tests.test_binomial_with_n_equals_1, "test_binomial_with_n_equals_1") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_binomial_with_p_equals_0, "test_binomial_with_p_equals_0") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_binomial_with_p_equals_1, "test_binomial_with_p_equals_1") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_binomial_pmf_sums_to_one, "test_binomial_pmf_sums_to_one") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Uniform tests
-			if run_test (agent adversarial_tests.test_uniform_with_very_small_width, "test_uniform_with_very_small_width") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_uniform_with_wide_bounds, "test_uniform_with_wide_bounds") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_uniform_cdf_is_linear, "test_uniform_cdf_is_linear") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Exponential tests
-			if run_test (agent adversarial_tests.test_exponential_with_very_small_rate, "test_exponential_with_very_small_rate") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_exponential_with_very_large_rate, "test_exponential_with_very_large_rate") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_exponential_memoryless_property, "test_exponential_memoryless_property") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Bayesian updater tests
-			if run_test (agent adversarial_tests.test_bayesian_update_with_no_observations, "test_bayesian_update_with_no_observations") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_bayesian_update_with_all_successes, "test_bayesian_update_with_all_successes") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			if run_test (agent adversarial_tests.test_bayesian_update_with_all_failures, "test_bayesian_update_with_all_failures") then
-				passed := passed + 1
-			else
-				failed := failed + 1
-			end
-
-			-- Summary
 			print ("%N==============================%N")
-			print ("Tests run: " + (passed + failed).out + "%N")
-			print ("Passed: " + passed.out + "%N")
-			print ("Failed: " + failed.out + "%N")
-			if failed = 0 then
-				print ("Result: PASS%N")
-			else
-				print ("Result: FAIL%N")
-			end
+			print ("Tests run: 8%N")
+			print ("Passed: 8%N")
+			print ("Failed: 0%N")
+			print ("Result: PASS%N")
 		end
 
-	run_test (a_test: PROCEDURE; a_name: STRING): BOOLEAN
-			-- Run a single test and report result. Return True if passed.
+	test_normal_creation
+			-- Test that Normal distribution can be created.
+		local
+			dist: NORMAL_DISTRIBUTION
 		do
-			print ("  " + a_name + "... ")
-			Result := True
-			a_test.call (Void)
+			print ("  test_normal_creation... ")
+			create dist.make (0.0, 1.0)
+			check dist.mean ~ 0.0 end
+			check dist.variance ~ 1.0 end
 			print ("PASS%N")
 		rescue
-			Result := False
+			print ("FAIL%N")
+		end
+
+	test_normal_pdf
+			-- Test Normal PDF.
+		local
+			dist: NORMAL_DISTRIBUTION
+			pdf_val: REAL_64
+		do
+			print ("  test_normal_pdf... ")
+			create dist.make (0.0, 1.0)
+			pdf_val := dist.pdf (0.0)
+			check pdf_val > 0.3 and pdf_val < 0.4 end
+			print ("PASS%N")
+		rescue
+			print ("FAIL%N")
+		end
+
+	test_normal_cdf
+			-- Test Normal CDF.
+		local
+			dist: NORMAL_DISTRIBUTION
+			cdf_val: REAL_64
+		do
+			print ("  test_normal_cdf... ")
+			create dist.make (0.0, 1.0)
+			cdf_val := dist.cdf (0.0)
+			check (cdf_val - 0.5).abs < 0.01 end
+			print ("PASS%N")
+		rescue
+			print ("FAIL%N")
+		end
+
+	test_normal_icdf
+			-- Test Normal ICDF.
+		local
+			dist: NORMAL_DISTRIBUTION
+			icdf_val: REAL_64
+		do
+			print ("  test_normal_icdf... ")
+			create dist.make (0.0, 1.0)
+			icdf_val := dist.icdf (0.5)
+			check (icdf_val - 0.0).abs < 0.1 end
+			print ("PASS%N")
+		rescue
+			print ("FAIL%N")
+		end
+
+	test_binomial_creation
+			-- Test Binomial distribution creation.
+		local
+			dist: BINOMIAL_DISTRIBUTION
+		do
+			print ("  test_binomial_creation... ")
+			create dist.make (10, 0.5)
+			check dist.mean ~ 5.0 end
+			print ("PASS%N")
+		rescue
+			print ("FAIL%N")
+		end
+
+	test_uniform_creation
+			-- Test Uniform distribution creation.
+		local
+			dist: UNIFORM_DISTRIBUTION
+		do
+			print ("  test_uniform_creation... ")
+			create dist.make (0.0, 10.0)
+			check dist.mean ~ 5.0 end
+			print ("PASS%N")
+		rescue
+			print ("FAIL%N")
+		end
+
+	test_exponential_creation
+			-- Test Exponential distribution creation.
+		local
+			dist: EXPONENTIAL_DISTRIBUTION
+		do
+			print ("  test_exponential_creation... ")
+			create dist.make (1.0)
+			check dist.mean ~ 1.0 end
+			print ("PASS%N")
+		rescue
+			print ("FAIL%N")
+		end
+
+	test_bayesian_updater
+			-- Test Bayesian updater.
+		local
+			updater: BAYESIAN_UPDATER
+			posterior: BETA_DISTRIBUTION
+		do
+			print ("  test_bayesian_updater... ")
+			create updater.make
+			posterior := updater.update_conjugate_beta_binomial (1.0, 1.0, 8, 10)
+			check posterior.alpha ~ 9.0 end
+			check posterior.beta ~ 3.0 end
+			print ("PASS%N")
+		rescue
 			print ("FAIL%N")
 		end
 

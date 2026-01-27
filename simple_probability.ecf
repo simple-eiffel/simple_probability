@@ -19,7 +19,6 @@
 	<target name="simple_probability_tests" extends="simple_probability">
 		<description>Test target for simple_probability</description>
 		<root class="TEST_APP" feature="make"/>
-		<output name="test_app" location="bin"/>
 		<option>
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>
