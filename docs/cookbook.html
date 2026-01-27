@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookbook - simple_montecarlo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header><h1>simple_montecarlo</h1><p class="tagline">Code Examples & Recipes</p></header>
+    <nav><ul><li><a href="index.html">Home</a></li><li><a href="quick.html">Quick API</a></li><li><a href="https://github.com/simple-eiffel/simple_montecarlo">GitHub</a></li></ul></nav>
+    <main>
+        <section><h2>Recipe 1: Manufacturing Quality Control</h2>
+            <pre><code>-- Analyze shaft diameter measurements
+measurement_analyzer
+    local l_exp: MONTE_CARLO_EXPERIMENT
+    do
+        create l_exp.make (100)
+        l_exp.set_trial_logic (agent measure_shaft)
+        l_exp.run_simulation
+        
+        if attached l_exp.statistics as stats then
+            print ("Shaft Diameter Analysis%N")
+            print ("Mean: " + stats.mean.out + " mm%N")
+            print ("Std Dev: " + stats.std_dev.out + "%N")
+            print ("95% CI: [" + stats.ci_95.first.out + ", " 
+                   + stats.ci_95.second.out + "]%N")
+        end
+    end
+
+measure_shaft: TRIAL_OUTCOME
+    local m: MEASUREMENT
+    do
+        create Result.make
+        create m.make_real (25.0 + random_noise)
+        Result.add_measurement ("diameter", m)
+    end</code></pre>
+        </section>
+        <section><h2>Recipe 2: Portfolio Risk Analysis</h2>
+            <pre><code>-- Simulate portfolio outcomes
+portfolio_simulator
+    local l_exp: MONTE_CARLO_EXPERIMENT
+    do
+        create l_exp.make (10000)
+        l_exp.set_seed (42)  -- Reproducible
+        l_exp.set_trial_logic (agent simulate_market)
+        l_exp.run_simulation
+        
+        if attached l_exp.statistics as stats then
+            print ("Portfolio Analysis%N")
+            print ("Expected Value: $" + stats.mean.out + "%N")
+            print ("Best Case (95%): $" + stats.ci_95.second.out + "%N")
+            print ("Worst Case (95%): $" + stats.ci_95.first.out + "%N")
+        end
+    end
+
+simulate_market: TRIAL_OUTCOME
+    local m_val: MEASUREMENT
+    do
+        create Result.make
+        -- Simulate portfolio value under this scenario
+        create m_val.make_real (compute_portfolio_value)
+        Result.add_measurement ("portfolio_value", m_val)
+    end</code></pre>
+        </section>
+        <section><h2>Recipe 3: Multi-Outcome Trials</h2>
+            <pre><code>-- Each trial produces multiple measurements
+experiment_with_multiple_outcomes
+    local l_exp: MONTE_CARLO_EXPERIMENT
+    do
+        create l_exp.make (1000)
+        l_exp.set_trial_logic (agent multi_measurement_trial)
+        l_exp.run_simulation
+    end
+
+multi_measurement_trial: TRIAL_OUTCOME
+    local m1, m2, m3: MEASUREMENT
+    do
+        create Result.make
+        create m1.make_real (random_normal (100, 15))
+        Result.add_measurement ("measurement_1", m1)
+        
+        create m2.make_real (random_normal (50, 10))
+        Result.add_measurement ("measurement_2", m2)
+        
+        create m3.make_real (random_exponential (2.0))
+        Result.add_measurement ("measurement_3", m3)
+    end</code></pre>
+        </section>
+        <section><h2>Recipe 4: Custom Confidence Level</h2>
+            <pre><code>-- Get 90% confidence interval
+l_exp.run_simulation
+if attached l_exp.statistics as stats then
+    if attached stats.confidence_interval (0.90) as ci_90 then
+        print ("90% CI: [" + ci_90.first.out + ", " 
+               + ci_90.second.out + "]%N")
+    end
+end</code></pre>
+        </section>
+        <section><h2>Recipe 5: Reproducible Simulation</h2>
+            <pre><code>-- Same seed produces identical results
+l_exp.set_seed (42)
+l_exp.set_trial_logic (agent trial_logic)
+l_exp.run_simulation
+
+-- Re-run with same seed, get identical statistics
+create l_exp2.make (trial_count)
+l_exp2.set_seed (42)  -- Same seed
+l_exp2.set_trial_logic (agent trial_logic)
+l_exp2.run_simulation
+
+-- l_exp2.statistics == l_exp.statistics (identical)</code></pre>
+        </section>
+        <footer><p>&copy; 2026 Simple Eiffel Contributors. MIT License.</p></footer>
+    </main>
+</body>
+</html>

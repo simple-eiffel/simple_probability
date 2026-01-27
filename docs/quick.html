@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick API - simple_montecarlo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>simple_montecarlo</h1>
+        <p class="tagline">Quick API Reference</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#quick-examples">Examples</a></li>
+            <li><a href="user-guide.html">User Guide</a></li>
+            <li><a href="api-reference.html">API Reference</a></li>
+            <li><a href="https://github.com/simple-eiffel/simple_montecarlo">GitHub</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="quick-examples">
+            <h2>Quick Examples</h2>
+
+            <h3>Basic Simulation (Manufacturing)</h3>
+            <pre><code>
+local
+    l_exp: MONTE_CARLO_EXPERIMENT
+    l_stats: SIMULATION_STATISTICS
+do
+    create l_exp.make (100)  -- 100 trials
+    l_exp.set_trial_logic (agent measure_shaft)
+    l_exp.run_simulation
+    l_stats := l_exp.statistics
+
+    print ("Mean: " + l_stats.mean.out + " mm%N")
+    print ("Std Dev: " + l_stats.std_dev.out + " mm%N")
+    print ("95% CI: [" + l_stats.ci_95.first.out + ", "
+           + l_stats.ci_95.second.out + "]%N")
+end
+
+measure_shaft: TRIAL_OUTCOME
+    do
+        create Result.make
+        create {MEASUREMENT} m.make_real (25.0 + random_noise)
+        Result.add_measurement ("diameter", m)
+    end
+            </code></pre>
+
+            <h3>MEASUREMENT - Type-Safe Values</h3>
+            <pre><code>
+local
+    m_real: MEASUREMENT
+    m_int: MEASUREMENT
+do
+    create m_real.make_real (42.5)
+    create m_int.make_integer (100)
+
+    -- Type-safe conversion
+    print (m_real.as_integer)  -- Truncates: 42
+    print (m_int.as_real)      -- Promotes: 100.0
+end
+            </code></pre>
+
+            <h3>TRIAL_OUTCOME - Collect Results</h3>
+            <pre><code>
+local
+    outcome: TRIAL_OUTCOME
+    m1, m2: MEASUREMENT
+do
+    create outcome.make
+
+    create m1.make_real (25.3)
+    outcome.add_measurement ("diameter", m1)
+
+    create m2.make_real (0.02)
+    outcome.add_measurement ("tolerance", m2)
+
+    -- Retrieve by name
+    if attached outcome.measurement_at ("diameter") as d then
+        print (d.as_real)
+    end
+end
+            </code></pre>
+
+            <h3>SIMULATION_STATISTICS - Results</h3>
+            <pre><code>
+local
+    stats: SIMULATION_STATISTICS
+    ci_95: TUPLE [REAL_64, REAL_64]
+do
+    -- Typically obtained from MONTE_CARLO_EXPERIMENT
+    stats := l_exp.statistics
+
+    -- Access properties
+    print ("Mean: " + stats.mean.out + "%N")
+    print ("Std Dev: " + stats.std_dev.out + "%N")
+    print ("Min: " + stats.min.out + "%N")
+    print ("Max: " + stats.max.out + "%N")
+    print ("Sample Size: " + stats.sample_size.out + "%N")
+
+    -- Confidence intervals
+    ci_95 := stats.ci_95
+    ci_99 := stats.ci_99
+
+    -- Custom confidence level
+    if attached stats.confidence_interval (0.90) as ci_90 then
+        print ("90% CI: [" + ci_90.first.out + ", " + ci_90.second.out + "]%N")
+    end
+end
+            </code></pre>
+        </section>
+
+        <section id="common-patterns">
+            <h2>Common Patterns</h2>
+
+            <h3>Pattern 1: Simple Single Measurement</h3>
+            <pre><code>
+trial_logic: TRIAL_OUTCOME
+    local m: MEASUREMENT
+    do
+        create Result.make
+        create m.make_real (random_value)
+        Result.add_measurement ("value", m)
+    end
+            </code></pre>
+
+            <h3>Pattern 2: Multiple Measurements</h3>
+            <pre><code>
+trial_logic: TRIAL_OUTCOME
+    local m1, m2: MEASUREMENT
+    do
+        create Result.make
+        create m1.make_real (random_stock_return)
+        Result.add_measurement ("stock", m1)
+
+        create m2.make_real (random_bond_return)
+        Result.add_measurement ("bond", m2)
+    end
+            </code></pre>
+
+            <h3>Pattern 3: Reproducible Results</h3>
+            <pre><code>
+l_exp.set_seed (42)  -- Use same seed for reproducibility
+l_exp.set_trial_logic (agent trial_logic)
+l_exp.run_simulation
+            </code></pre>
+        </section>
+
+        <section id="api-summary">
+            <h2>API Summary</h2>
+
+            <h3>MEASUREMENT</h3>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>make_real (a_value: REAL_64)</td>
+                    <td>Create real-valued measurement</td>
+                </tr>
+                <tr>
+                    <td>make_integer (a_value: INTEGER)</td>
+                    <td>Create integer-valued measurement</td>
+                </tr>
+                <tr>
+                    <td>as_real: REAL_64</td>
+                    <td>Get as real (promotes integer)</td>
+                </tr>
+                <tr>
+                    <td>as_integer: INTEGER</td>
+                    <td>Get as integer (truncates)</td>
+                </tr>
+                <tr>
+                    <td>is_real: BOOLEAN</td>
+                    <td>Query which type stored</td>
+                </tr>
+            </table>
+
+            <h3>TRIAL_OUTCOME</h3>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>make</td>
+                    <td>Create empty outcome</td>
+                </tr>
+                <tr>
+                    <td>add_measurement (name, value)</td>
+                    <td>Record named measurement</td>
+                </tr>
+                <tr>
+                    <td>measurement_at (name): MEASUREMENT</td>
+                    <td>Retrieve by name</td>
+                </tr>
+                <tr>
+                    <td>has_measurement (name): BOOLEAN</td>
+                    <td>Check if measurement exists</td>
+                </tr>
+                <tr>
+                    <td>count: INTEGER</td>
+                    <td>Number of measurements</td>
+                </tr>
+            </table>
+
+            <h3>SIMULATION_STATISTICS</h3>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>mean: REAL_64</td>
+                    <td>Arithmetic mean</td>
+                </tr>
+                <tr>
+                    <td>std_dev: REAL_64</td>
+                    <td>Standard deviation</td>
+                </tr>
+                <tr>
+                    <td>min, max: REAL_64</td>
+                    <td>Min/max values</td>
+                </tr>
+                <tr>
+                    <td>ci_95, ci_99</td>
+                    <td>Confidence intervals</td>
+                </tr>
+                <tr>
+                    <td>confidence_interval (level)</td>
+                    <td>Custom CI level</td>
+                </tr>
+            </table>
+
+            <h3>MONTE_CARLO_EXPERIMENT</h3>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>make (trial_count: INTEGER)</td>
+                    <td>Create experiment</td>
+                </tr>
+                <tr>
+                    <td>set_seed (seed: INTEGER)</td>
+                    <td>Set random seed</td>
+                </tr>
+                <tr>
+                    <td>set_trial_logic (agent)</td>
+                    <td>Define trial logic</td>
+                </tr>
+                <tr>
+                    <td>run_simulation</td>
+                    <td>Execute all trials</td>
+                </tr>
+                <tr>
+                    <td>statistics: SIMULATION_STATISTICS</td>
+                    <td>Get aggregated results</td>
+                </tr>
+            </table>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Simple Eiffel Contributors. MIT License.</p>
+            <p><a href="https://github.com/simple-eiffel/simple_montecarlo">GitHub Repository</a></p>
+        </footer>
+    </main>
+</body>
+</html>

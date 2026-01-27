@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture - simple_montecarlo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header><h1>simple_montecarlo</h1><p class="tagline">Architecture & Design</p></header>
+    <nav><ul><li><a href="index.html">Home</a></li><li><a href="api-reference.html">API Reference</a></li><li><a href="https://github.com/simple-eiffel/simple_montecarlo">GitHub</a></li></ul></nav>
+    <main>
+        <section><h2>Class Hierarchy</h2>
+            <pre><code>MONTE_CARLO_EXPERIMENT
+  └─ uses → TRIAL_OUTCOME (N copies, one per trial)
+       └─ contains → MEASUREMENT (multiple per outcome)
+  
+MONTE_CARLO_EXPERIMENT
+  └─ produces → SIMULATION_STATISTICS (aggregated)</code></pre>
+        </section>
+        <section><h2>Data Flow</h2>
+            <pre><code>User defines trial logic agent
+         ↓
+MONTE_CARLO_EXPERIMENT runs N trials
+         ↓
+Each trial invokes user's logic agent
+         ↓
+Agent returns TRIAL_OUTCOME with MEASUREMENTS
+         ↓
+Experiment collects all outcomes
+         ↓
+Extract all measurements from all outcomes
+         ↓
+Compute statistics (mean, std_dev, CIs)
+         ↓
+Return SIMULATION_STATISTICS to user</code></pre>
+        </section>
+        <section><h2>Design Decisions</h2>
+            <h3>Type-Safe Measurements</h3>
+            <p>MEASUREMENT distinguishes observed values from probabilities, preventing category errors in scientific code.</p>
+            <h3>Semantic API</h3>
+            <p>Uses business domain terminology (Experiment, Trial, Outcome) rather than mathematical terminology, making the library accessible to engineers.</p>
+            <h3>Agent-Based Trial Logic</h3>
+            <p>Flexible approach lets users define trial behavior inline without inheritance or complex factory patterns.</p>
+            <h3>Sequential (for now)</h3>
+            <p>Current phase uses sequential trial execution. SCOOP-based parallelization planned for v2.0.</p>
+        </section>
+        <section><h2>Performance</h2>
+            <ul><li>Single trial: ~1 microsecond (agent invocation + outcome creation)</li>
+            <li>1,000 trials: &lt;50 milliseconds</li>
+            <li>1,000,000 trials: &lt;50 seconds (estimated)</li></ul>
+        </section>
+        <footer><p>&copy; 2026 Simple Eiffel Contributors. MIT License.</p></footer>
+    </main>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Guide - simple_montecarlo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>simple_montecarlo</h1>
+        <p class="tagline">User Guide</p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quick.html">Quick API</a></li>
+            <li><a href="api-reference.html">API Reference</a></li>
+            <li><a href="https://github.com/simple-eiffel/simple_montecarlo">GitHub</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section>
+            <h2>Installation</h2>
+            <p>Add to your ECF file:</p>
+            <pre><code>&lt;library name="simple_montecarlo" location="$SIMPLE_EIFFEL/simple_montecarlo/simple_montecarlo.ecf"/&gt;</code></pre>
+        </section>
+        <section>
+            <h2>Basic Concepts</h2>
+            <h3>MEASUREMENT</h3>
+            <p>Type-safe wrapper for observed values. Prevents confusion between measurements and probabilities.</p>
+            <pre><code>create m.make_real (42.5)
+create m.make_integer (100)</code></pre>
+            <h3>TRIAL_OUTCOME</h3>
+            <p>Container for measurements from a single trial. Store multiple named measurements.</p>
+            <h3>MONTE_CARLO_EXPERIMENT</h3>
+            <p>Orchestrates N trials with custom logic, collects outcomes, computes statistics.</p>
+            <h3>SIMULATION_STATISTICS</h3>
+            <p>Aggregated results including mean, std_dev, min/max, and confidence intervals.</p>
+        </section>
+        <section>
+            <h2>Workflow</h2>
+            <ol>
+                <li>Create experiment with trial count</li>
+                <li>Define trial logic (what happens in each trial)</li>
+                <li>Set optional random seed for reproducibility</li>
+                <li>Run simulation (executes all trials)</li>
+                <li>Get statistics from completed experiment</li>
+            </ol>
+        </section>
+        <section>
+            <h2>Design by Contract</h2>
+            <p>All classes use Design by Contract (DBC):</p>
+            <ul>
+                <li><strong>Preconditions:</strong> Valid input requirements</li>
+                <li><strong>Postconditions:</strong> Guaranteed output properties</li>
+                <li><strong>Invariants:</strong> Class consistency rules</li>
+            </ul>
+            <p>Contracts are enforced at runtime and catch errors immediately.</p>
+        </section>
+        <section>
+            <h2>Void Safety</h2>
+            <p>All code is void-safe (void_safety="all"). References are explicitly marked:</p>
+            <ul>
+                <li><strong>attached:</strong> Never null</li>
+                <li><strong>detachable:</strong> May be null (use attached check)</li>
+            </ul>
+        </section>
+        <footer>
+            <p>&copy; 2026 Simple Eiffel Contributors. MIT License.</p>
+        </footer>
+    </main>
+</body>
+</html>

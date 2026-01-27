@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - simple_montecarlo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header><h1>simple_montecarlo</h1><p class="tagline">API Reference</p></header>
+    <nav><ul><li><a href="index.html">Home</a></li><li><a href="quick.html">Quick API</a></li><li><a href="https://github.com/simple-eiffel/simple_montecarlo">GitHub</a></li></ul></nav>
+    <main>
+        <section><h2>MEASUREMENT</h2>
+            <p>Type-safe wrapper for measurement values (real or integer).</p>
+            <h3>Creation</h3>
+            <ul><li>make_real(a_value: REAL_64) - Create real-valued measurement</li>
+            <li>make_integer(a_value: INTEGER) - Create integer-valued measurement</li></ul>
+            <h3>Access</h3>
+            <ul><li>as_real: REAL_64 - Get value as real (promotes integer)</li>
+            <li>as_integer: INTEGER - Get value as integer (truncates)</li>
+            <li>is_real: BOOLEAN - Query which type stored</li></ul>
+        </section>
+        <section><h2>TRIAL_OUTCOME</h2>
+            <p>Container for measurements from a single trial.</p>
+            <h3>Creation</h3>
+            <ul><li>make - Create empty outcome</li></ul>
+            <h3>Commands</h3>
+            <ul><li>add_measurement(a_name: STRING; a_value: MEASUREMENT) - Record measurement</li></ul>
+            <h3>Queries</h3>
+            <ul><li>count: INTEGER - Number of measurements</li>
+            <li>has_measurement(a_name: STRING): BOOLEAN - Check existence</li>
+            <li>measurement_at(a_name: STRING): MEASUREMENT - Retrieve by name</li>
+            <li>all_measurements: ARRAYED_LIST[MEASUREMENT] - Get all measurements</li></ul>
+        </section>
+        <section><h2>SIMULATION_STATISTICS</h2>
+            <p>Aggregated statistics from all trials.</p>
+            <h3>Queries</h3>
+            <ul><li>mean: REAL_64 - Arithmetic mean</li>
+            <li>std_dev: REAL_64 - Standard deviation</li>
+            <li>min: REAL_64 - Minimum value</li>
+            <li>max: REAL_64 - Maximum value</li>
+            <li>sample_size: INTEGER - Number of measurements</li>
+            <li>ci_95: TUPLE[REAL_64, REAL_64] - 95% confidence interval</li>
+            <li>ci_99: TUPLE[REAL_64, REAL_64] - 99% confidence interval</li>
+            <li>confidence_interval(a_level: REAL_64): TUPLE[REAL_64, REAL_64] - Custom level</li></ul>
+        </section>
+        <section><h2>MONTE_CARLO_EXPERIMENT</h2>
+            <p>Orchestrator for running trials and computing statistics.</p>
+            <h3>Creation</h3>
+            <ul><li>make(a_trial_count: INTEGER) - Create experiment with N trials</li></ul>
+            <h3>Configuration</h3>
+            <ul><li>set_seed(a_seed: INTEGER) - Set random seed</li>
+            <li>set_trial_logic(a_logic: PROCEDURE) - Define trial behavior</li></ul>
+            <h3>Execution</h3>
+            <ul><li>run_simulation - Execute all trials and collect outcomes</li></ul>
+            <h3>Results</h3>
+            <ul><li>outcome_count: INTEGER - Number of collected outcomes</li>
+            <li>outcome_at(a_index: INTEGER): TRIAL_OUTCOME - Get outcome N</li>
+            <li>statistics: SIMULATION_STATISTICS - Aggregated statistics</li></ul>
+        </section>
+        <footer><p>&copy; 2026 Simple Eiffel Contributors. MIT License.</p></footer>
+    </main>
+</body>
+</html>
