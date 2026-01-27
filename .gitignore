@@ -1,9 +1,12 @@
 # Build artifacts
 EIFGENs/
-*.exe
 *.dll
 *.o
 *.a
+
+# Intermediate executables (but allow finalized binaries in bin/)
+*.exe
+!bin/test_app.exe
 
 # IDE files
 .idea/
@@ -25,9 +28,8 @@ exception_trace.log
 *.bak
 *.swp
 
-# Distribution
+# Distribution (exclude intermediate, keep bin for finalized binaries)
 dist/
-bin/
 
 # Environment
 .env

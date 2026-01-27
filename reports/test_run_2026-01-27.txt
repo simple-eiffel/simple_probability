@@ -1,0 +1,52 @@
+simple_probability test suite
+==============================
+
+  test_make_creates_distribution... PASS
+  test_default_create_creates_standard_normal... PASS
+  test_pdf_at_mean_is_maximum... PASS
+  test_pdf_positive... PASS
+  test_cdf_at_mean_is_half... PASS
+  test_cdf_monotonic... PASS
+  test_icdf_of_half_is_mean... PASS
+  test_sample_in_domain... PASS
+  test_seeding_produces_same_sequence... PASS
+
+-- ADVERSARIAL TESTS --
+
+  test_normal_with_very_small_sigma... PASS
+  test_normal_with_very_large_sigma... PASS
+  test_normal_with_negative_mean... PASS
+  test_normal_with_extreme_positive_mean... PASS
+  test_cdf_at_extreme_negative_x... PASS
+  test_cdf_at_extreme_positive_x... PASS
+  test_icdf_at_extreme_low_probability... PASS
+  test_icdf_at_extreme_high_probability... PASS
+  test_cdf_strictly_monotonic_over_range... PASS
+  test_pdf_symmetric_around_mean... PASS
+  test_pdf_unimodal_around_mean... PASS
+  test_icdf_cdf_roundtrip... PASS
+  test_icdf_monotonic_in_probability... PASS
+  test_sample_multiple_times_within_domain... PASS
+  test_sample_approximately_follows_distribution... PASS
+  test_variance_properties... PASS
+  test_standard_deviation_is_sqrt_variance... PASS
+  test_multiple_independent_distributions... PASS
+  test_binomial_with_n_equals_1... PASS
+  test_binomial_with_p_equals_0... PASS
+  test_binomial_with_p_equals_1... PASS
+  test_binomial_pmf_sums_to_one... PASS
+  test_uniform_with_very_small_width... PASS
+  test_uniform_with_wide_bounds... PASS
+  test_uniform_cdf_is_linear... PASS
+  test_exponential_with_very_small_rate... PASS
+  test_exponential_with_very_large_rate... PASS
+  test_exponential_memoryless_property... PASS
+  test_bayesian_update_with_no_observations... PASS
+  test_bayesian_update_with_all_successes... PASS
+  test_bayesian_update_with_all_failures... PASS
+
+==============================
+Tests run: 40
+Passed: 40
+Failed: 0
+Result: PASS
