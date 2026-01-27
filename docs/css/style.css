@@ -25,8 +25,8 @@ header .logo-container {
 }
 
 header .logo {
-    width: 120px;
-    height: 120px;
+    max-width: 200px;
+    height: auto;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
