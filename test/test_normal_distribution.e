@@ -5,15 +5,8 @@ note
 
 class TEST_NORMAL_DISTRIBUTION
 
-create
-	make
-
-feature {NONE} -- Initialization
-
-	make
-			-- Create test instance.
-		do
-		end
+inherit
+	TEST_SET_BASE
 
 feature -- Creation Tests
 
