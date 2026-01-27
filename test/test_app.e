@@ -86,6 +86,12 @@ feature {NONE} -- Initialization
 				print ("  test_seeding_produces_same_sequence... FAIL%N")
 			end
 
+			if test_passes (agent tests.test_precondition_sigma_positive) then
+				print ("  test_precondition_sigma_positive... PASS%N")
+			else
+				print ("  test_precondition_sigma_positive... FAIL%N")
+			end
+
 			print ("%N")
 		end
 
