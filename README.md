@@ -1,23 +1,10 @@
-<p align="center">
-  <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="100" cy="100" r="95" fill="#667eea" stroke="#fff" stroke-width="2"/>
-    <text x="100" y="120" font-size="50" font-weight="bold" text-anchor="middle" fill="#fff">Prob</text>
-  </svg>
-</p>
+# simple_probability
 
-<h1 align="center">simple_probability</h1>
+[Documentation](https://simple-eiffel.github.io/simple_probability/) • [GitHub](https://github.com/simple-eiffel/simple_probability) • [Issues](https://github.com/simple-eiffel/simple_probability/issues)
 
-<p align="center">
-  <a href="https://simple-eiffel.github.io/simple_probability/">Documentation</a> •
-  <a href="https://github.com/simple-eiffel/simple_probability">GitHub</a> •
-  <a href="https://github.com/simple-eiffel/simple_probability/issues">Issues</a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT">
-  <img src="https://img.shields.io/badge/Eiffel-25.02-purple.svg" alt="Eiffel 25.02">
-  <img src="https://img.shields.io/badge/DBC-Contracts-green.svg" alt="Design by Contract">
-</p>
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+![Eiffel 25.02](https://img.shields.io/badge/Eiffel-25.02-purple.svg)
+![DBC: Contracts](https://img.shields.io/badge/DBC-Contracts-green.svg)
 
 Type-safe probability distributions and Bayesian inference for Eiffel.
 
