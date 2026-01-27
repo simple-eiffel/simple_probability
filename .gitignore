@@ -1,0 +1,34 @@
+# Build artifacts
+EIFGENs/
+*.exe
+*.dll
+*.o
+*.a
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+exception_trace.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Distribution
+dist/
+bin/
+
+# Environment
+.env
+.env.local

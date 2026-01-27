@@ -1,0 +1,87 @@
+src/bayesian_updater.e:27:		require
+src/bayesian_updater.e:38:		ensure
+src/bayesian_updater.e:52:		require
+src/bayesian_updater.e:65:		ensure
+src/bayesian_updater.e:70:invariant
+src/beta_distribution.e:21:		require
+src/beta_distribution.e:29:		ensure
+src/beta_distribution.e:41:		ensure then
+src/beta_distribution.e:96:		ensure then
+src/beta_distribution.e:138:		ensure then
+src/beta_distribution.e:180:invariant
+src/binomial_distribution.e:21:		require
+src/binomial_distribution.e:29:		ensure
+src/binomial_distribution.e:41:		ensure then
+src/binomial_distribution.e:113:		ensure then
+src/binomial_distribution.e:156:		ensure then
+src/binomial_distribution.e:171:		require
+src/binomial_distribution.e:184:		ensure
+src/binomial_distribution.e:208:		ensure then
+src/binomial_distribution.e:232:invariant
+src/distribution.e:14:		ensure
+src/distribution.e:22:		ensure
+src/distribution.e:29:		require
+src/distribution.e:32:		ensure
+src/distribution.e:40:		ensure
+src/distribution.e:49:		ensure
+src/distribution.e:56:		ensure
+src/distribution.e:70:		ensure
+src/distribution.e:80:		ensure
+src/distribution.e:96:		require
+src/distribution.e:99:		ensure
+src/distribution.e:118:		ensure
+src/distribution.e:125:		ensure
+src/distribution.e:129:invariant
+src/distribution_continuous.e:25:		ensure then
+src/distribution_continuous.e:34:		require else
+src/distribution_continuous.e:37:		ensure then
+src/distribution_continuous.e:48:		require else
+src/distribution_continuous.e:51:		ensure then
+src/distribution_continuous.e:61:		ensure then
+src/distribution_continuous.e:72:		ensure
+src/distribution_continuous.e:82:		ensure
+src/distribution_continuous.e:99:invariant
+src/distribution_discrete.e:26:		ensure
+src/distribution_discrete.e:35:		require else
+src/distribution_discrete.e:38:		ensure then
+src/distribution_discrete.e:48:		require else
+src/distribution_discrete.e:51:		ensure then
+src/distribution_discrete.e:62:		ensure then
+src/distribution_discrete.e:72:		ensure then
+src/distribution_discrete.e:79:		ensure then
+src/distribution_discrete.e:105:		require
+src/distribution_discrete.e:108:		ensure
+src/distribution_discrete.e:127:invariant
+src/exponential_distribution.e:21:		require
+src/exponential_distribution.e:27:		ensure
+src/exponential_distribution.e:37:		ensure then
+src/exponential_distribution.e:76:		ensure then
+src/exponential_distribution.e:111:		ensure then
+src/exponential_distribution.e:149:invariant
+src/normal_distribution.e:21:		require
+src/normal_distribution.e:29:		ensure
+src/normal_distribution.e:41:		ensure then
+src/normal_distribution.e:90:		ensure then
+src/normal_distribution.e:128:		ensure then
+src/normal_distribution.e:168:invariant
+src/simple_probability.e:23:		require
+src/simple_probability.e:28:		ensure
+src/simple_probability.e:36:		require
+src/simple_probability.e:40:		ensure
+src/simple_probability.e:48:		require
+src/simple_probability.e:53:		ensure
+src/simple_probability.e:61:		require
+src/simple_probability.e:65:		ensure
+src/simple_probability.e:74:		require
+src/simple_probability.e:79:		ensure
+src/simple_probability.e:91:		ensure
+src/simple_probability.e:136:		ensure
+src/simple_probability.e:143:		require
+src/simple_probability.e:188:		ensure
+src/simple_probability.e:193:invariant
+src/uniform_distribution.e:21:		require
+src/uniform_distribution.e:28:		ensure
+src/uniform_distribution.e:40:		ensure then
+src/uniform_distribution.e:93:		ensure then
+src/uniform_distribution.e:131:		ensure then
+src/uniform_distribution.e:164:invariant
