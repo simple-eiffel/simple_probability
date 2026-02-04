@@ -8,6 +8,13 @@ class TEST_DISTRIBUTION_ADVERSARIAL
 inherit
 	TEST_SET_BASE
 
+feature {NONE} -- Fixtures
+
+	fixtures: DISTRIBUTION_FIXTURES
+		once
+			create Result
+		end
+
 feature -- Boundary Value Tests (Normal Distribution)
 
 	test_normal_with_very_small_sigma

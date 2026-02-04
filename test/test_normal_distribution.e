@@ -8,51 +8,45 @@ class TEST_NORMAL_DISTRIBUTION
 inherit
 	TEST_SET_BASE
 
+feature {NONE} -- Fixtures
+
+	fixtures: DISTRIBUTION_FIXTURES
+		once
+			create Result
+		end
+
 feature -- Creation Tests
 
 	test_make_creates_distribution
 			-- Test that make creates distribution with correct parameters.
-		local
-			dist: NORMAL_DISTRIBUTION
 		do
-			create dist.make (0.0, 1.0)
-			check mean_set: dist.mean ~ 0.0 end
-			check variance_set: dist.variance ~ 1.0 end
+			assert_reals_equal ("mean_set", 0.0, fixtures.std_normal.mean, 0.0001)
+			assert_reals_equal ("variance_set", 1.0, fixtures.std_normal.variance, 0.0001)
 		end
 
 	test_default_create_creates_standard_normal
 			-- Test that default_create produces N(0,1).
-		local
-			dist: NORMAL_DISTRIBUTION
 		do
-			create dist
-			check mean_is_zero: dist.mean ~ 0.0 end
-			check std_dev_is_one: dist.standard_deviation ~ 1.0 end
+			assert_reals_equal ("mean_is_zero", 0.0, fixtures.std_normal.mean, 0.0001)
+			assert_reals_equal ("std_dev_is_one", 1.0, fixtures.std_normal.standard_deviation, 0.0001)
 		end
 
 feature -- PDF Tests
 
 	test_pdf_at_mean_is_maximum
 			-- Test that PDF has maximum at mean.
-		local
-			dist: NORMAL_DISTRIBUTION
-			pdf_at_mean, pdf_away: REAL_64
 		do
-			create dist.make (5.0, 2.0)
-			pdf_at_mean := dist.pdf (5.0)
-			pdf_away := dist.pdf (6.0)
-			check pdf_at_mean_greater: pdf_at_mean > pdf_away end
+			assert_true ("pdf_at_mean_greater",
+				fixtures.custom_normal.pdf (100.0) > fixtures.custom_normal.pdf (101.0))
 		end
 
 	test_pdf_positive
 			-- Test that PDF is non-negative.
 		local
-			dist: NORMAL_DISTRIBUTION
 			pdf_val: REAL_64
 		do
-			create dist.make (0.0, 1.0)
-			pdf_val := dist.pdf (-3.0)
-			check pdf_non_negative: pdf_val >= 0 end
+			pdf_val := fixtures.std_normal.pdf (-3.0)
+			assert_true ("pdf_non_negative", pdf_val >= 0.0)
 		end
 
 feature -- CDF Tests
@@ -60,22 +54,21 @@ feature -- CDF Tests
 	test_cdf_at_mean_is_half
 			-- Test that CDF at mean is approximately 0.5.
 		local
-			dist: NORMAL_DISTRIBUTION
 			cdf_val: REAL_64
+			dist: NORMAL_DISTRIBUTION
 		do
 			create dist.make (3.0, 1.0)
 			cdf_val := dist.cdf (3.0)
-			check cdf_at_mean_approx_half: (cdf_val - 0.5).abs < 0.01 end
+			assert_reals_equal ("cdf_at_mean_approx_half", 0.5, cdf_val, 0.01)
 		end
 
 	test_cdf_monotonic
 			-- Test that CDF is monotonically increasing.
-		local
-			dist: NORMAL_DISTRIBUTION
 		do
-			create dist.make (0.0, 1.0)
-			check cdf_increasing: dist.cdf (0.0) < dist.cdf (1.0) end
-			check cdf_increasing_2: dist.cdf (1.0) < dist.cdf (2.0) end
+			assert_true ("cdf_increasing",
+				fixtures.std_normal.cdf (0.0) < fixtures.std_normal.cdf (1.0))
+			assert_true ("cdf_increasing_2",
+				fixtures.std_normal.cdf (1.0) < fixtures.std_normal.cdf (2.0))
 		end
 
 feature -- ICDF Tests
@@ -88,7 +81,7 @@ feature -- ICDF Tests
 		do
 			create dist.make (2.5, 1.0)
 			icdf_val := dist.icdf (0.5)
-			check icdf_half_approx_mean: (icdf_val - 2.5).abs < 0.00001 end
+			assert_reals_equal ("icdf_half_approx_mean", 2.5, icdf_val, 0.00001)
 		end
 
 feature -- Sampling Tests
@@ -96,30 +89,23 @@ feature -- Sampling Tests
 	test_sample_in_domain
 			-- Test that sample is in valid domain.
 		local
-			dist: NORMAL_DISTRIBUTION
 			sample_val: REAL_64
 		do
-			create dist.make (0.0, 1.0)
-			sample_val := dist.sample
-			check sample_not_nan: not sample_val.is_nan end
+			sample_val := fixtures.std_normal.sample
+			assert_false ("sample_not_nan", sample_val.is_nan)
 		end
 
 	test_seeding_produces_same_sequence
 			-- Test that same seed produces identical sample sequences.
 		local
-			dist1, dist2: NORMAL_DISTRIBUTION
 			s1_1, s1_2, s2_1, s2_2: REAL_64
 		do
-			create dist1.make (0.0, 1.0)
-			create dist2.make (0.0, 1.0)
-			dist1.set_seed (42)
-			dist2.set_seed (42)
-			s1_1 := dist1.sample
-			s1_2 := dist1.sample
-			s2_1 := dist2.sample
-			s2_2 := dist2.sample
-			check first_samples_match: (s1_1 - s2_1).abs < 0.0000000001 end
-			check second_samples_match: (s1_2 - s2_2).abs < 0.0000000001 end
+			s1_1 := fixtures.seeded_normal_1.sample
+			s1_2 := fixtures.seeded_normal_1.sample
+			s2_1 := fixtures.seeded_normal_2.sample
+			s2_2 := fixtures.seeded_normal_2.sample
+			assert_reals_equal ("first_samples_match", s1_1, s2_1, 0.0000000001)
+			assert_reals_equal ("second_samples_match", s1_2, s2_2, 0.0000000001)
 		end
 
 feature -- Contract Tests
