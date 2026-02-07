@@ -34,3 +34,5 @@ dist/
 # Environment
 .env
 .env.local
+*.melted
+*.epr
